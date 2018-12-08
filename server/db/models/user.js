@@ -5,8 +5,7 @@ const db = require('../db')
 const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
-    unique: true,
-    allowNull: false
+    unique: true
   },
   password: {
     type: Sequelize.STRING,
@@ -25,6 +24,12 @@ const User = db.define('user', {
     }
   },
   googleId: {
+    type: Sequelize.STRING
+  },
+  spotifyId: {
+    type: Sequelize.STRING
+  },
+  spotifyAccessToken: {
     type: Sequelize.STRING
   }
 })
@@ -63,5 +68,5 @@ const setSaltAndPassword = user => {
   }
 }
 
-User.beforeCreate(setSaltAndPassword)
-User.beforeUpdate(setSaltAndPassword)
+// User.beforeCreate(setSaltAndPassword)
+// User.beforeUpdate(setSaltAndPassword)
