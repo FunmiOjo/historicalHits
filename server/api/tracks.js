@@ -1,17 +1,11 @@
 const router = require('express').Router()
-const {getSongInfo} = require('../billboard')
-const {getPossibleTracks} = require('../spotify')
+
+const {getTrackInfo} = require('../spotify')
 
 router.get('/rb', async (req, res, next) => {
   try {
-    const songInfo = await getSongInfo()
-    const {title, artist} = songInfo.song
-    const possibleTracks = await getPossibleTracks({
-      title,
-      artist
-    })
-    const {name, href, uri, preview_url, id} = possibleTracks.tracks.items[0]
-    res.json({name, href, uri, preview_url, id})
+    const trackInfo = await getTrackInfo()
+    res.json(trackInfo)
   } catch (error) {
     console.error(error)
     if (

@@ -1,5 +1,7 @@
 const axios = require('axios')
 const {User} = require('../db/models')
+const {getSongInfo} = require('../billboard')
+
 const {stripFeatures} = require('../utils')
 
 const updateAccessToken = async accessToken => {
@@ -42,7 +44,9 @@ const getNewAccessToken = async refreshToken => {
   return data
 }
 
-const getPossibleTracks = async ({title, artist}) => {
+const getTrackInfo = async () => {
+  const songInfo = await getSongInfo()
+  const {title, artist} = songInfo.song
   const {spotifyAccessToken, spotifyRefreshToken} = await getTokens()
   try {
     const header = {Authorization: `Bearer ${spotifyAccessToken}`}
@@ -52,8 +56,8 @@ const getPossibleTracks = async ({title, artist}) => {
       )}&type=track&limit=1`,
       {headers: header}
     )
-    console.log('POSSIBLE TRACKS', possibleTracks)
-    return possibleTracks
+    const {name, href, uri, preview_url, id} = possibleTracks.tracks.items[0]
+    return {name, href, uri, preview_url, id}
   } catch (error) {
     console.error(error)
     if (error.response.status === 401) {
@@ -68,4 +72,4 @@ const getPossibleTracks = async ({title, artist}) => {
   }
 }
 
-module.exports = {getPossibleTracks}
+module.exports = {getTrackInfo}
