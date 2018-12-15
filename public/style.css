@@ -1,9 +1,18 @@
 body {
-  font-family: sans-serif;
+  color: #030119;
+  background-color: #e3e9f2;
+  /* font-family: 'Libre Baskerville', serif; */
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
 }
 
 a {
+  color: #030119;
   text-decoration: none;
+}
+
+a:hover {
+  border-bottom: 1px dotted;
 }
 
 label {
@@ -18,4 +27,18 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.player {
+  margin: 5px;
+}
+
+.player-wrapper {
+  padding: 5px;
+  display: inline-block
+}
+
+.song-info {
+  font-weight: 300;
+  text-align: center;
 }

@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import EmbeddedPlayer from './EmbeddedPlayer'
+import {convertDateToLongFormat} from '../utils'
+
 /**
  * COMPONENT
  */
@@ -16,27 +19,25 @@ export class UserHome extends Component {
 
   async componentDidMount() {
     const {data} = await axios.get('/api/tracks/rb')
-    const {id, date} = data
+    const {id, date, position} = data
+    const formattedDate = convertDateToLongFormat(date)
+
     this.setState({
       id,
-      date
+      date: formattedDate,
+      position
     })
   }
 
   render() {
-    const {email} = this.props
-    const {date, id} = this.state
+    const {date, id, position} = this.state
     return (
       <div>
-        <h3>Welcome, {email}</h3>
-        <h4>{date}</h4>
-        <iframe
-          src={`https://open.spotify.com/embed/track/${id}`}
-          width="300"
-          height="380"
-          frameBorder="0"
-          allowtransparency="true"
-          allow="encrypted-media"
+        <EmbeddedPlayer
+          id={id}
+          date={date}
+          position={position}
+          genre="R&B/Hip-Hop"
         />
       </div>
     )

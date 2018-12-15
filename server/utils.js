@@ -23,6 +23,7 @@ const getRandomYear = () => {
   const currentYear = date.getFullYear()
   const maxYearsToAdd = currentYear - 1958
   const yearsToAdd = Math.floor(Math.random() * maxYearsToAdd)
+  console.log('YEARS TO ADD', yearsToAdd)
   return 1958 + yearsToAdd
 }
 

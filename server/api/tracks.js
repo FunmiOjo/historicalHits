@@ -9,7 +9,8 @@ router.get('/rb', async (req, res, next) => {
     console.error(error)
     if (
       error.message ===
-      'Access token was refreshed.  Redirect to /api/tracks/rb'
+        'Access token was refreshed.  Redirect to /api/tracks/rb' ||
+      error.message === 'Track not found'
     ) {
       res.redirect('/api/tracks/rb')
     } else {

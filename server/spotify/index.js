@@ -47,7 +47,7 @@ const getNewAccessToken = async refreshToken => {
 const getTrackInfo = async () => {
   const songInfo = await getSongInfo()
   const {title, artist} = songInfo.song
-  const {date} = songInfo
+  const {date, position} = songInfo
   const {spotifyAccessToken, spotifyRefreshToken} = await getTokens()
   try {
     const header = {Authorization: `Bearer ${spotifyAccessToken}`}
@@ -57,11 +57,15 @@ const getTrackInfo = async () => {
       )}&type=track&limit=1`,
       {headers: header}
     )
-    const {name, href, uri, preview_url, id} = possibleTracks.tracks.items[0]
-    return {name, href, uri, preview_url, id, date}
+    if (possibleTracks.tracks.items.length > 0) {
+      const {name, href, uri, preview_url, id} = possibleTracks.tracks.items[0]
+      return {name, href, uri, preview_url, id, date, position}
+    } else {
+      throw new Error('Track not found')
+    }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       const {access_token: newAccessToken} = await getNewAccessToken(
         spotifyRefreshToken
       )
@@ -69,6 +73,7 @@ const getTrackInfo = async () => {
       throw new Error('Access token was refreshed.  Redirect to /api/tracks/rb')
     } else {
       console.error(error)
+      throw error
     }
   }
 }
