@@ -1,3 +1,13 @@
+const formatUrlString = str => {
+  const formattedString = str.split(' ').join('%20')
+  console.log('formattedString', formattedString)
+  return formattedString
+}
+
+const formatArtistQuery = artist => {
+  return stripFeatures(artist)
+}
+
 const getTodaysDate = () => {
   const todaysDate = new Date()
   return todaysDate
@@ -36,9 +46,18 @@ const getPosition = () => {
   return (date.month + date.day) % 24
 }
 
+const stripFeatures = str => {
+  const wordArray = str.split(' ')
+  const indexOfWordFeature = wordArray.indexOf('Featuring')
+  const wordArrayWithoutFeatures = wordArray.slice(0, indexOfWordFeature)
+  return wordArrayWithoutFeatures.join(' ')
+}
+
 module.exports = {
+  formatUrlString,
   getDateSeparatedByHyphens,
   getPosition,
   getRandomPosition,
-  getRandomYear
+  getRandomYear,
+  stripFeatures
 }

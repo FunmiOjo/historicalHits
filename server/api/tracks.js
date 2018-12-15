@@ -1,37 +1,27 @@
 const router = require('express').Router()
-const axios = require('axios')
-const {User} = require('../db/models')
-
-const {getDateSeparatedByHyphens, getRandomPosition} = require('../utils')
+const {getSongInfo} = require('../billboard')
+const {getPossibleTracks} = require('../spotify')
 
 router.get('/rb', async (req, res, next) => {
   try {
-    const date = getDateSeparatedByHyphens()
-    const position = getRandomPosition()
-    const {data: songInfo} = await axios.get(
-      `http://localhost:5000/rb?date=${date}&position=${position}`
-    )
-
-    const user = await User.findOne({
-      where: {
-        spotifyId: 'diosmeda'
-      }
-    })
-
-    res.json(songInfo)
-
-    const {spotifyAccessToken} = user
-    const header = `Authorization: Bearer ${spotifyAccessToken}`
+    const songInfo = await getSongInfo()
     const {title, artist} = songInfo.song
-    console.log('TITLE: ', title, 'ARTIST: ', artist)
-    const {data: possibleTracks} = await axios.get(
-      `https://api.spotify.com/v1/search?q=name:${title}%20artist:${artist}&type=track`,
-      {headers: {header}}
-    )
-
-    res.json(possibleTracks)
+    const possibleTracks = await getPossibleTracks({
+      title,
+      artist
+    })
+    const {name, href, uri, preview_url, id} = possibleTracks.tracks.items[0]
+    res.json({name, href, uri, preview_url, id})
   } catch (error) {
-    next(error)
+    console.error(error)
+    if (
+      error.message ===
+      'Access token was refreshed.  Redirect to /api/tracks/rb'
+    ) {
+      res.redirect('/api/tracks/rb')
+    } else {
+      next(error)
+    }
   }
 })
 

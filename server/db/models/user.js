@@ -31,6 +31,9 @@ const User = db.define('user', {
   },
   spotifyAccessToken: {
     type: Sequelize.STRING
+  },
+  spotifyRefreshToken: {
+    type: Sequelize.STRING
   }
 })
 
@@ -56,6 +59,14 @@ User.encryptPassword = function(plainText, salt) {
     .update(plainText)
     .update(salt)
     .digest('hex')
+}
+
+User.findBySpotifyId = function(spotifyId) {
+  return User.findOne({
+    where: {
+      spotifyId
+    }
+  })
 }
 
 /**
