@@ -1,18 +1,46 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-
+import axios from 'axios'
 /**
  * COMPONENT
  */
-export const UserHome = props => {
-  const {email} = props
+export class UserHome extends Component {
+  constructor() {
+    super()
+    this.state = {
+      id: '',
+      date: ''
+    }
+  }
 
-  return (
-    <div>
-      <h3>Welcome, {email}</h3>
-    </div>
-  )
+  async componentDidMount() {
+    const {data} = await axios.get('/api/tracks/rb')
+    const {id, date} = data
+    this.setState({
+      id,
+      date
+    })
+  }
+
+  render() {
+    const {email} = this.props
+    const {date, id} = this.state
+    return (
+      <div>
+        <h3>Welcome, {email}</h3>
+        <h4>{date}</h4>
+        <iframe
+          src={`https://open.spotify.com/embed/track/${id}`}
+          width="300"
+          height="380"
+          frameBorder="0"
+          allowtransparency="true"
+          allow="encrypted-media"
+        />
+      </div>
+    )
+  }
 }
 
 /**

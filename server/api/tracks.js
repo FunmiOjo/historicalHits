@@ -1,5 +1,4 @@
 const router = require('express').Router()
-
 const {getTrackInfo} = require('../spotify')
 
 router.get('/rb', async (req, res, next) => {

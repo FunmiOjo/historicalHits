@@ -9,7 +9,7 @@ const getSongInfo = async () => {
     const {data: songInfo} = await axios.get(
       `http://localhost:5000/rb?date=${date}&position=${position}`
     )
-    return songInfo
+    return {...songInfo, date}
   } catch (error) {
     console.error(error)
   }

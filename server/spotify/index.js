@@ -47,6 +47,7 @@ const getNewAccessToken = async refreshToken => {
 const getTrackInfo = async () => {
   const songInfo = await getSongInfo()
   const {title, artist} = songInfo.song
+  const {date} = songInfo
   const {spotifyAccessToken, spotifyRefreshToken} = await getTokens()
   try {
     const header = {Authorization: `Bearer ${spotifyAccessToken}`}
@@ -57,7 +58,7 @@ const getTrackInfo = async () => {
       {headers: header}
     )
     const {name, href, uri, preview_url, id} = possibleTracks.tracks.items[0]
-    return {name, href, uri, preview_url, id}
+    return {name, href, uri, preview_url, id, date}
   } catch (error) {
     console.error(error)
     if (error.response.status === 401) {
