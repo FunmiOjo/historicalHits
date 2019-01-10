@@ -17,8 +17,12 @@ const convertMonthNumberToName = monthNumber => {
 }
 
 export const convertDateToLongFormat = dateWithHyphens => {
+  console.log(
+    'dateWithHyphens ------------------------------------------------------------------ ',
+    dateWithHyphens
+  )
   const separatedDates = dateWithHyphens.split('-')
-  const month = convertMonthNumberToName(separatedDates[1])
+  const month = convertMonthNumberToName(Number(separatedDates[1]))
   const day = separatedDates[2]
   const year = separatedDates[0]
   return `${month} ${day}, ${year}`
