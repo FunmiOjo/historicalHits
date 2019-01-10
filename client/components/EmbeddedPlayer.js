@@ -19,7 +19,16 @@ const EmbeddedPlayer = ({id, date, position, genre}) => {
       </div>
     )
   } else {
-    return <div>Loading</div>
+    return (
+      <ul>
+        <li />
+        <li />
+        <li />
+        <li />
+        <li />
+        <li />
+      </ul>
+    )
   }
 }
 
